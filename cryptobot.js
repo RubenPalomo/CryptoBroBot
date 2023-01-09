@@ -228,7 +228,11 @@ bot.onText(/^\/setCurrency(.+)/, (msg, match) => {
     bot.sendMessage(msg.chat.id, "The specified currency is not valid.");
     return;
   }
-  bot.sendMessage(msg.chat.id, `The currency was changed to ${newCurrency}.`);
+  bot.sendMessage(
+    msg.chat.id,
+    `The currency was changed to *${newCurrency}*.`,
+    { parse_mode: "Markdown" }
+  );
 });
 
 // Command for help
