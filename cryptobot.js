@@ -109,6 +109,18 @@ const clearAlarm = (alarm) => {
   }
 };
 
+// Function to get all the current alarms
+const getAlarms = (msg) => {
+  let message = "";
+  if (priceMin > 0)
+    message += `The alarm for the *minimum price* is set in *${priceMin}*.\n`;
+  if (priceMax > 0)
+    message += `The alarm for the *maximum price* is set in *${priceMax}*.\n`;
+  message !== ""
+    ? bot.sendMessage(msg.chat.id, message, { parse_mode: "Markdown" })
+    : bot.sendMessage(msg.chat.id, "No alarms set yet.");
+};
+
 // Function to change the current currency
 const setCurrency = (newCurrency) => (currency = newCurrency);
 
@@ -209,6 +221,9 @@ bot.onText(/^\/clearAlarm/, (msg) => {
   bot.sendMessage(msg.chat.id, "The alarm was deleted.");
 });
 
+// Command to get all the current alarms
+bot.onText(/^\/getAlarms/, (msg) => getAlarms(msg));
+
 // Command to get the predefined currency
 bot.onText(/^\/getCurrency/, (msg) =>
   bot.sendMessage(
@@ -239,7 +254,7 @@ bot.onText(/^\/setCurrency(.+)/, (msg, match) => {
 bot.onText(/^\/help/, (msg) => {
   bot.sendMessage(
     msg.chat.id,
-    "*Bot Commands*\n\n1.Use _/info_ to get information about BTC.\n" +
+    "*Bot Commands*\n1.Use _/info_ to get information about BTC.\n" +
       "2. Use _/currentPrice_ to get the current price of BTC.\n" +
       "3. Use _/priceInDate + date_ (with dd-mm-yyyy format) to get the BTC price" +
       " on the specified date.\n" +
@@ -248,8 +263,9 @@ bot.onText(/^\/help/, (msg) => {
       "alarm is set yo the maximum price.\n" +
       "5. Use _/clearAlarm + min/max_ (optional) to delete the min/max alarm or both " +
       "if you typed anything.\n" +
-      "6. Use _/getCurrency_ to obtain the currency that is currently set." +
-      "7. Use _/setCurrency + eur/usd_ to set the current currency to it.\n\n" +
+      "6. Use _/getAlarms_ to receive a list with all the current alarms.\n" +
+      "7. Use _/getCurrency_ to obtain the currency that is currently set.\n" +
+      "8. Use _/setCurrency + eur/usd_ to set the current currency to it.\n\n" +
       "If you have any issues or questions type to *@RubenPal*✏️",
     { parse_mode: "Markdown" }
   );
